@@ -3,4 +3,12 @@
   <groupId>de.tmy.ComputerInformationSaver</groupId>
   <artifactId>ComputerInformationSaver</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+
+  <dependencies>
+  	<dependency>
+	    <groupId>org.xerial</groupId>
+    	<artifactId>sqlite-jdbc</artifactId>
+    	<version>3.7.2</version>
+	</dependency>
+  </dependencies>
 </project>
