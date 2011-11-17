@@ -66,4 +66,27 @@ public class OperatingSystem extends SuperBean {
 		this.name = name;
 	}
 
+	/**
+	 * TODO tmy (17.11.2011): Insert javadoc for method bean.bean.OperatingSystem.toString.
+	 * <p>
+	 * </p>
+	 * 
+	 * @return
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("OperatingSystem [description=");
+		builder.append(this.description);
+		builder.append(", name=");
+		builder.append(this.name);
+		builder.append(", toString()=");
+		builder.append(super.toString());
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

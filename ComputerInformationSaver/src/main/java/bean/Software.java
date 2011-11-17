@@ -88,4 +88,29 @@ public class Software extends SuperBean {
 	public void setVersionNumber(final String versionNumber) {
 		this.versionNumber = versionNumber;
 	}
+
+	/**
+	 * TODO tmy (17.11.2011): Insert javadoc for method bean.bean.Software.toString.
+	 * <p>
+	 * </p>
+	 * 
+	 * @return
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("Software [description=");
+		builder.append(this.description);
+		builder.append(", name=");
+		builder.append(this.name);
+		builder.append(", versionNumber=");
+		builder.append(this.versionNumber);
+		builder.append(", toString()=");
+		builder.append(super.toString());
+		builder.append("]");
+		return builder.toString();
+	}
 }

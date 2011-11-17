@@ -176,4 +176,37 @@ public class NetworkInterfaceCard extends SuperBean {
 		this.subnetMask = subnetMask;
 	}
 
+	/**
+	 * TODO tmy (17.11.2011): Insert javadoc for method bean.bean.NetworkInterfaceCard.toString.
+	 * <p>
+	 * </p>
+	 * 
+	 * @return
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("NetworkInterfaceCard [computerId=");
+		builder.append(this.computerId);
+		builder.append(", dns=");
+		builder.append(this.dns);
+		builder.append(", domain=");
+		builder.append(this.domain);
+		builder.append(", gateway=");
+		builder.append(this.gateway);
+		builder.append(", ipAddress=");
+		builder.append(this.ipAddress);
+		builder.append(", macAddress=");
+		builder.append(this.macAddress);
+		builder.append(", subnetMask=");
+		builder.append(this.subnetMask);
+		builder.append(", toString()=");
+		builder.append(super.toString());
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

@@ -3,9 +3,10 @@ package helper;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
- * helper class for the database connection via JDBC
+ * helper class for the sqlite database via JDBC
  * <p>
  * </p>
  * 
@@ -17,7 +18,7 @@ import java.sql.SQLException;
  * 
  */
 
-public class SQLiteConnectionHelper {
+public class SQLiteJDBCHelper {
 
 	/**
 	 * 
@@ -37,6 +38,7 @@ public class SQLiteConnectionHelper {
 		} catch (final SQLException e) {
 			e.printStackTrace();
 		}
+
 		return connection;
 	}
 
@@ -63,7 +65,30 @@ public class SQLiteConnectionHelper {
 			e.printStackTrace();
 		}
 
-		// TODO: implement me
 		return connection;
+	}
+
+	/**
+	 * 
+	 * TODO tmy (16.11.2011): Insert javadoc for method helper.SQLiteJDBCHelper.initStatement.
+	 * <p>
+	 * </p>
+	 * 
+	 * @author ETHALON: tmy
+	 * @param statement
+	 * 
+	 * @param connection
+	 * @return Statement statement
+	 */
+	public static Statement initStatement(Statement statement, final Connection connection) {
+		try {
+			statement = connection.createStatement();
+
+		} catch (final SQLException e) {
+			e.printStackTrace();
+		}
+
+		return statement;
+
 	}
 }

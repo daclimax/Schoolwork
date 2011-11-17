@@ -1,8 +1,9 @@
 package service;
 
-import java.sql.ResultSet;
+import java.util.List;
 import java.util.Map;
 
+import bean.SearchResult;
 import bean.SuperBean;
 
 /**
@@ -57,7 +58,7 @@ public interface IDatabaseOperations {
 	 * @param searchAttributes
 	 * @return Boolean returns true when the delete was successful
 	 */
-	public ResultSet searchDataByAttributes(Map<String, String> searchAttributes);
+	public List<SearchResult> searchDataByAttributes(Map<String, String> searchAttributes);
 
 	/**
 	 * 
