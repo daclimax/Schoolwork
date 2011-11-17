@@ -176,16 +176,6 @@ public class NetworkInterfaceCard extends SuperBean {
 		this.subnetMask = subnetMask;
 	}
 
-	/**
-	 * TODO tmy (17.11.2011): Insert javadoc for method bean.bean.NetworkInterfaceCard.toString.
-	 * <p>
-	 * </p>
-	 * 
-	 * @return
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();

@@ -16,7 +16,7 @@ package bean;
 public class Computer extends SuperBean {
 
 	// name
-	String computerName;
+	String name;
 
 	/**
 	 * Constructor
@@ -30,8 +30,8 @@ public class Computer extends SuperBean {
 	 * 
 	 * @return Returns the computerName.
 	 */
-	public String getComputerName() {
-		return this.computerName;
+	public String getName() {
+		return this.name;
 	}
 
 	/**
@@ -40,25 +40,15 @@ public class Computer extends SuperBean {
 	 * @param computerName
 	 *            The computerName to set.
 	 */
-	public void setComputerName(final String computerName) {
-		this.computerName = computerName;
+	public void setName(final String computerName) {
+		this.name = computerName;
 	}
-
-	/**
-	 * TODO tmy (17.11.2011): Insert javadoc for method bean.bean.Computer.toString.
-	 * <p>
-	 * </p>
-	 * 
-	 * @return
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
 
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("Computer [computerName=");
-		builder.append(this.computerName);
+		builder.append(this.name);
 		builder.append(", toString()=");
 		builder.append(super.toString());
 		builder.append("]");

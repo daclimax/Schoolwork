@@ -3,7 +3,11 @@ package service;
 import java.util.List;
 import java.util.Map;
 
+import bean.Computer;
+import bean.NetworkInterfaceCard;
+import bean.OperatingSystem;
 import bean.SearchResult;
+import bean.Software;
 import bean.SuperBean;
 
 /**
@@ -30,35 +34,86 @@ public interface IDatabaseOperations {
 	 * @author ETHALON: tmy
 	 * 
 	 * @param superBean
-	 * @return Boolean returns true when the delete was successful
 	 */
-	public Boolean deleteData(SuperBean superBean);
+	public void deleteData(SuperBean superBean);
 
 	/**
 	 * 
-	 * inserts new data by given bean
+	 * inserts new data by given bean and computerId (to map it)
 	 * <p>
 	 * </p>
 	 * 
 	 * @author ETHALON: tmy
 	 * 
 	 * @param superBean
-	 * @return Boolean returns true when the delete was successful
+	 * @param computerId
 	 */
-	public Boolean insertNewData(SuperBean superBean);
+	public void insertNewData(SuperBean superBean, Integer computerId);
 
 	/**
 	 * 
-	 * searches the db by given searchAttributes (fieldname - key, tablename - value)
+	 * searches the table COMPUTER by given searchAttributes (fieldname - key, searchValue - value)
 	 * <p>
 	 * </p>
 	 * 
 	 * @author ETHALON: tmy
 	 * 
 	 * @param searchAttributes
-	 * @return Boolean returns true when the delete was successful
+	 * @return List of SearchResult
+	 */
+	public List<Computer> searchComputerByAttributes(Map<String, String> searchAttributes);
+
+	/**
+	 * 
+	 * searches the db by given searchAttributes (fieldname - key, searchValue - value)
+	 * <p>
+	 * </p>
+	 * 
+	 * @author ETHALON: tmy
+	 * 
+	 * @param searchAttributes
+	 * @return List of SearchResult
 	 */
 	public List<SearchResult> searchDataByAttributes(Map<String, String> searchAttributes);
+
+	/**
+	 * 
+	 * searches the table NETWORK_CARD_INTERFACE by given searchAttributes (fieldname - key, searchValue - value)
+	 * <p>
+	 * </p>
+	 * 
+	 * @author ETHALON: tmy
+	 * 
+	 * @param searchAttributes
+	 * @return List of SearchResult
+	 */
+	public List<NetworkInterfaceCard> searchNetworkInterfaceCardByAttributes(Map<String, String> searchAttributes);
+
+	/**
+	 * 
+	 * searches the table OPERATING_SYSTEM by given searchAttributes (fieldname - key, searchValue - value)
+	 * <p>
+	 * </p>
+	 * 
+	 * @author ETHALON: tmy
+	 * 
+	 * @param searchAttributes
+	 * @return List of SearchResult
+	 */
+	public List<OperatingSystem> searchOperatingSystemByAttributes(Map<String, String> searchAttributes);
+
+	/**
+	 * 
+	 * searches the table SOFTWARE by given searchAttributes (fieldname - key, searchValue - value)
+	 * <p>
+	 * </p>
+	 * 
+	 * @author ETHALON: tmy
+	 * 
+	 * @param searchAttributes
+	 * @return List of SearchResult
+	 */
+	public List<Software> searchSoftwareByAttributes(Map<String, String> searchAttributes);
 
 	/**
 	 * 
@@ -69,7 +124,7 @@ public interface IDatabaseOperations {
 	 * @author ETHALON: tmy
 	 * 
 	 * @param superBean
-	 * @return Boolean returns true when the delete was successful
+	 * @param computerId
 	 */
-	public Boolean updateData(SuperBean superBean);
+	public void updateData(SuperBean superBean);
 }

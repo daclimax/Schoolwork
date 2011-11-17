@@ -15,40 +15,41 @@ package bean;
 
 public class SearchResult {
 
-	private Integer computerId;
-
+	// computer name
 	private String computerName;
 
+	// network interface card dns address
 	private String nicDns;
 
+	// network interface card domain name
 	private String nicDomain;
 
+	// network interface card gateway address
 	private String nicGateway;
 
+	// network interface card ip address
 	private String nicIpAddress;
 
+	// network interface card mac address
 	private String nicMacAddress;
 
+	// network interface card subnet mask
 	private String nicSubnetMask;
 
+	// operating system description
 	private String osDescription;
 
+	// operating system name
 	private String osName;
 
+	// software description
 	private String softwareDescription;
 
+	// software name
 	private String softwareName;
 
+	// software version number
 	private String softwareVersionNumber;
-
-	/**
-	 * Returns the computerId.
-	 * 
-	 * @return Returns the computerId.
-	 */
-	public Integer getComputerId() {
-		return this.computerId;
-	}
 
 	/**
 	 * Returns the computerName.
@@ -156,16 +157,6 @@ public class SearchResult {
 	 */
 	public String getSoftwareVersionNumber() {
 		return this.softwareVersionNumber;
-	}
-
-	/**
-	 * Sets the computerId field with given computerId.
-	 * 
-	 * @param computerId
-	 *            The computerId to set.
-	 */
-	public void setComputerId(final Integer computerId) {
-		this.computerId = computerId;
 	}
 
 	/**
@@ -288,22 +279,10 @@ public class SearchResult {
 		this.softwareVersionNumber = softwareVersionNumber;
 	}
 
-	/**
-	 * TODO tmy (17.11.2011): Insert javadoc for method bean.bean.SearchResult.toString.
-	 * <p>
-	 * </p>
-	 * 
-	 * @return
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("SearchResult [computerId=");
-		builder.append(this.computerId);
-		builder.append(", computerName=");
+		builder.append("SearchResult [ computerName=");
 		builder.append(this.computerName);
 		builder.append(", nicDns=");
 		builder.append(this.nicDns);

@@ -89,16 +89,6 @@ public class Software extends SuperBean {
 		this.versionNumber = versionNumber;
 	}
 
-	/**
-	 * TODO tmy (17.11.2011): Insert javadoc for method bean.bean.Software.toString.
-	 * <p>
-	 * </p>
-	 * 
-	 * @return
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
