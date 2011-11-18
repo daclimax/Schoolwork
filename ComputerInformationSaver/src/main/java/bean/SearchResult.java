@@ -15,6 +15,9 @@ package bean;
 
 public class SearchResult {
 
+	// computer ID
+	private Integer computerId;
+
 	// computer name
 	private String computerName;
 
@@ -26,6 +29,9 @@ public class SearchResult {
 
 	// network interface card gateway address
 	private String nicGateway;
+
+	// network interface card ID
+	private Integer nicId;
 
 	// network interface card ip address
 	private String nicIpAddress;
@@ -39,17 +45,32 @@ public class SearchResult {
 	// operating system description
 	private String osDescription;
 
+	// operating system ID
+	private Integer osId;
+
 	// operating system name
 	private String osName;
 
 	// software description
 	private String softwareDescription;
 
+	// software ID
+	private Integer softwareId;
+
 	// software name
 	private String softwareName;
 
 	// software version number
 	private String softwareVersionNumber;
+
+	/**
+	 * Returns the computerId.
+	 * 
+	 * @return Returns the computerId.
+	 */
+	public Integer getComputerId() {
+		return this.computerId;
+	}
 
 	/**
 	 * Returns the computerName.
@@ -85,6 +106,15 @@ public class SearchResult {
 	 */
 	public String getNicGateway() {
 		return this.nicGateway;
+	}
+
+	/**
+	 * Returns the nicId.
+	 * 
+	 * @return Returns the nicId.
+	 */
+	public Integer getNicId() {
+		return this.nicId;
 	}
 
 	/**
@@ -124,6 +154,15 @@ public class SearchResult {
 	}
 
 	/**
+	 * Returns the osId.
+	 * 
+	 * @return Returns the osId.
+	 */
+	public Integer getOsId() {
+		return this.osId;
+	}
+
+	/**
 	 * Returns the osName.
 	 * 
 	 * @return Returns the osName.
@@ -142,6 +181,15 @@ public class SearchResult {
 	}
 
 	/**
+	 * Returns the softwareId.
+	 * 
+	 * @return Returns the softwareId.
+	 */
+	public Integer getSoftwareId() {
+		return this.softwareId;
+	}
+
+	/**
 	 * Returns the softwareName.
 	 * 
 	 * @return Returns the softwareName.
@@ -157,6 +205,16 @@ public class SearchResult {
 	 */
 	public String getSoftwareVersionNumber() {
 		return this.softwareVersionNumber;
+	}
+
+	/**
+	 * Sets the computerId field with given computerId.
+	 * 
+	 * @param computerId
+	 *            The computerId to set.
+	 */
+	public void setComputerId(final Integer computerId) {
+		this.computerId = computerId;
 	}
 
 	/**
@@ -200,6 +258,16 @@ public class SearchResult {
 	}
 
 	/**
+	 * Sets the nicId field with given nicId.
+	 * 
+	 * @param nicId
+	 *            The nicId to set.
+	 */
+	public void setNicId(final Integer nicId) {
+		this.nicId = nicId;
+	}
+
+	/**
 	 * Sets the nicIpAddress field with given nicIpAddress.
 	 * 
 	 * @param nicIpAddress
@@ -240,6 +308,16 @@ public class SearchResult {
 	}
 
 	/**
+	 * Sets the osId field with given osId.
+	 * 
+	 * @param osId
+	 *            The osId to set.
+	 */
+	public void setOsId(final Integer osId) {
+		this.osId = osId;
+	}
+
+	/**
 	 * Sets the osName field with given osName.
 	 * 
 	 * @param osName
@@ -257,6 +335,16 @@ public class SearchResult {
 	 */
 	public void setSoftwareDescription(final String softwareDescription) {
 		this.softwareDescription = softwareDescription;
+	}
+
+	/**
+	 * Sets the softwareId field with given softwareId.
+	 * 
+	 * @param softwareId
+	 *            The softwareId to set.
+	 */
+	public void setSoftwareId(final Integer softwareId) {
+		this.softwareId = softwareId;
 	}
 
 	/**

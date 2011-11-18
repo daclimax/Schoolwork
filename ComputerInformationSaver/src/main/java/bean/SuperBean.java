@@ -15,9 +15,6 @@ package bean;
 
 public class SuperBean {
 
-	// deleted-flag (0 = active, 1 = deleted)
-	private Short deleted;
-
 	// technical ID
 	private Integer id;
 
@@ -28,17 +25,7 @@ public class SuperBean {
 	 * Constructor
 	 */
 	public SuperBean() {
-		this.deleted = 0;
 		this.version = 1;
-	}
-
-	/**
-	 * Returns the deleted.
-	 * 
-	 * @return Returns the deleted.
-	 */
-	public Short getDeleted() {
-		return this.deleted;
 	}
 
 	/**
@@ -57,16 +44,6 @@ public class SuperBean {
 	 */
 	public Integer getVersion() {
 		return this.version;
-	}
-
-	/**
-	 * Sets the deleted field with given deleted.
-	 * 
-	 * @param deleted
-	 *            The deleted to set.
-	 */
-	public void setDeleted(final Short deleted) {
-		this.deleted = deleted;
 	}
 
 	/**
@@ -92,9 +69,7 @@ public class SuperBean {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("SuperBean [deleted=");
-		builder.append(this.deleted);
-		builder.append(", id=");
+		builder.append("SuperBean [id=");
 		builder.append(this.id);
 		builder.append(", version=");
 		builder.append(this.version);
