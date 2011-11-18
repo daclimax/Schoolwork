@@ -108,7 +108,7 @@ public class SQLiteImpl implements IDatabaseOperations {
 		if (superBean instanceof Computer) {
 			this.insertNewComputer((Computer) superBean);
 		} else if (superBean instanceof NetworkInterfaceCard) {
-			this.insertNewNetworkInterfaceCard((NetworkInterfaceCard) superBean, computerId);
+			this.insertNewNetworkInterfaceCard((NetworkInterfaceCard) superBean);
 		} else if (superBean instanceof OperatingSystem) {
 			this.insertNewOperatingSystem((OperatingSystem) superBean, computerId);
 		} else if (superBean instanceof Software) {
@@ -142,6 +142,7 @@ public class SQLiteImpl implements IDatabaseOperations {
 				}
 			}
 		}
+		queryString.append("; ");
 
 		List<Computer> results = null;
 
@@ -153,7 +154,8 @@ public class SQLiteImpl implements IDatabaseOperations {
 			e.printStackTrace();
 		}
 
-		SQLiteJDBCHelper.closeConnection(this.connection);
+		this.statement = SQLiteJDBCHelper.closeStatement(this.statement);
+		this.connection = SQLiteJDBCHelper.closeConnection(this.connection);
 		return results;
 	}
 
@@ -166,15 +168,19 @@ public class SQLiteImpl implements IDatabaseOperations {
 
 		// standard query for the search
 		final StringBuffer queryString = new StringBuffer();
-		queryString.append("SELECT com_name, ");
+		queryString.append("SELECT com_id, ");
+		queryString.append("       com_name, ");
+		queryString.append("       nic_id, ");
 		queryString.append("       nic_mac_address, ");
 		queryString.append("       nic_ip_address, ");
 		queryString.append("       nic_subnet_mask, ");
 		queryString.append("       nic_dns, ");
 		queryString.append("       nic_gateway, ");
 		queryString.append("       nic_domain, ");
+		queryString.append("       osy_id, ");
 		queryString.append("       osy_name, ");
 		queryString.append("       osy_description, ");
+		queryString.append("       sof_id, ");
 		queryString.append("       sof_name, ");
 		queryString.append("       sof_description, ");
 		queryString.append("       sof_version_number ");
@@ -207,6 +213,7 @@ public class SQLiteImpl implements IDatabaseOperations {
 				}
 			}
 		}
+		queryString.append("; ");
 
 		List<SearchResult> results = null;
 
@@ -218,8 +225,8 @@ public class SQLiteImpl implements IDatabaseOperations {
 			e.printStackTrace();
 		}
 
-		SQLiteJDBCHelper.closeConnection(this.connection);
-
+		this.statement = SQLiteJDBCHelper.closeStatement(this.statement);
+		this.connection = SQLiteJDBCHelper.closeConnection(this.connection);
 		return results;
 	}
 
@@ -256,6 +263,7 @@ public class SQLiteImpl implements IDatabaseOperations {
 				}
 			}
 		}
+		queryString.append("; ");
 
 		List<NetworkInterfaceCard> results = null;
 
@@ -267,7 +275,8 @@ public class SQLiteImpl implements IDatabaseOperations {
 			e.printStackTrace();
 		}
 
-		SQLiteJDBCHelper.closeConnection(this.connection);
+		this.statement = SQLiteJDBCHelper.closeStatement(this.statement);
+		this.connection = SQLiteJDBCHelper.closeConnection(this.connection);
 		return results;
 	}
 
@@ -299,6 +308,7 @@ public class SQLiteImpl implements IDatabaseOperations {
 				}
 			}
 		}
+		queryString.append("; ");
 
 		List<OperatingSystem> results = null;
 
@@ -310,7 +320,8 @@ public class SQLiteImpl implements IDatabaseOperations {
 			e.printStackTrace();
 		}
 
-		SQLiteJDBCHelper.closeConnection(this.connection);
+		this.statement = SQLiteJDBCHelper.closeStatement(this.statement);
+		this.connection = SQLiteJDBCHelper.closeConnection(this.connection);
 		return results;
 	}
 
@@ -342,6 +353,7 @@ public class SQLiteImpl implements IDatabaseOperations {
 				}
 			}
 		}
+		queryString.append("; ");
 
 		List<Software> results = null;
 
@@ -353,7 +365,8 @@ public class SQLiteImpl implements IDatabaseOperations {
 			e.printStackTrace();
 		}
 
-		SQLiteJDBCHelper.closeConnection(this.connection);
+		this.statement = SQLiteJDBCHelper.closeStatement(this.statement);
+		this.connection = SQLiteJDBCHelper.closeConnection(this.connection);
 		return results;
 	}
 
@@ -378,55 +391,253 @@ public class SQLiteImpl implements IDatabaseOperations {
 	 * deletes data in the computer entity
 	 */
 	private void deleteComputer(final Computer computer) {
-		// TODO: implement delete
+		this.connection = SQLiteJDBCHelper.initConnection(this.connection);
+		this.statement = SQLiteJDBCHelper.initStatement(this.statement, this.connection);
 
+		// delete computer from the computer table
+		final StringBuilder queryString = new StringBuilder();
+		queryString.append("DELETE FROM computer ");
+		queryString.append("WHERE      com_id = " + computer.getId() + "; ");
+
+		// delete computer from mapping table (mapping_computer_operating_system)
+		final StringBuilder queryStringMappingOperatingSystem = new StringBuilder();
+		queryString.append("DELETE FROM mapping_computer_operating_system ");
+		queryString.append("WHERE      mco_com_id = " + computer.getId() + "; ");
+
+		// delete computer from mapping table (mapping_computer_software)
+		final StringBuilder queryStringMappingSoftware = new StringBuilder();
+		queryString.append("DELETE FROM mapping_computer_software ");
+		queryString.append("WHERE      mcs_com_id = " + computer.getId() + "; ");
+
+		System.out.println(queryString);
+		System.out.println(queryStringMappingOperatingSystem);
+		System.out.println(queryStringMappingSoftware);
+		try {
+			this.statement.executeUpdate(queryString.toString());
+			this.statement.executeUpdate(queryStringMappingOperatingSystem.toString());
+			this.statement.executeUpdate(queryStringMappingSoftware.toString());
+		} catch (final SQLException e) {
+			e.printStackTrace();
+		}
+
+		this.statement = SQLiteJDBCHelper.closeStatement(this.statement);
+		this.connection = SQLiteJDBCHelper.closeConnection(this.connection);
 	}
 
 	/**
 	 * deletes data in the network_interface_card entity
 	 */
 	private void deleteNetworkInterfaceCard(final NetworkInterfaceCard networkInterfaceCard) {
-		// TODO: implement delete
+		this.connection = SQLiteJDBCHelper.initConnection(this.connection);
+		this.statement = SQLiteJDBCHelper.initStatement(this.statement, this.connection);
+
+		// delete networkInterfaceCard from the network_interface_card table
+		final StringBuilder queryString = new StringBuilder();
+		queryString.append("DELETE FROM network_interface_card ");
+		queryString.append("WHERE      nic_id = " + networkInterfaceCard.getId() + "; ");
+
+		try {
+			this.statement.executeUpdate(queryString.toString());
+		} catch (final SQLException e) {
+			e.printStackTrace();
+		}
+
+		this.statement = SQLiteJDBCHelper.closeStatement(this.statement);
+		this.connection = SQLiteJDBCHelper.closeConnection(this.connection);
 	}
 
 	/**
 	 * deletes data in the operating_system entity
 	 */
 	private void deleteOperatingSystem(final OperatingSystem operatingSystem) {
-		// TODO: implement delete
+		this.connection = SQLiteJDBCHelper.initConnection(this.connection);
+		this.statement = SQLiteJDBCHelper.initStatement(this.statement, this.connection);
 
+		// delete operatingSystem from the operating_system table
+		final StringBuilder queryString = new StringBuilder();
+		queryString.append("DELETE FROM operating_system ");
+		queryString.append("WHERE      osy_id = " + operatingSystem.getId() + "; ");
+
+		// delete operatingSystem from mapping table (mapping_computer_operating_system)
+		final StringBuilder queryStringMappingOperatingSystem = new StringBuilder();
+		queryString.append("DELETE FROM mapping_computer_operating_system ");
+		queryString.append("WHERE      mco_osy_id = " + operatingSystem.getId() + "; ");
+
+		try {
+			this.statement.executeUpdate(queryString.toString());
+			this.statement.executeUpdate(queryStringMappingOperatingSystem.toString());
+		} catch (final SQLException e) {
+			e.printStackTrace();
+		}
+
+		this.statement = SQLiteJDBCHelper.closeStatement(this.statement);
+		this.connection = SQLiteJDBCHelper.closeConnection(this.connection);
 	}
 
 	/**
 	 * deletes data in the software entity
 	 */
 	private void deleteSoftware(final Software software) {
-		// TODO: implement delete
+		this.connection = SQLiteJDBCHelper.initConnection(this.connection);
+		this.statement = SQLiteJDBCHelper.initStatement(this.statement, this.connection);
 
+		// delete software from the software table
+		final StringBuilder queryString = new StringBuilder();
+		queryString.append("DELETE FROM software ");
+		queryString.append("WHERE      sof_id = " + software.getId() + "; ");
+
+		// delete software from mapping table (mapping_computer_software)
+		final StringBuilder queryStringMappingSoftware = new StringBuilder();
+		queryString.append("DELETE FROM mapping_computer_software ");
+		queryString.append("WHERE      mcs_sof_id = " + software.getId() + "; ");
+
+		try {
+			this.statement.executeUpdate(queryString.toString());
+			this.statement.executeUpdate(queryStringMappingSoftware.toString());
+		} catch (final SQLException e) {
+			e.printStackTrace();
+		}
+
+		this.statement = SQLiteJDBCHelper.closeStatement(this.statement);
+		this.connection = SQLiteJDBCHelper.closeConnection(this.connection);
 	}
 
 	/**
 	 * inserts new data in the computer entity
 	 */
 	private void insertNewComputer(final Computer computer) {
-		// TODO: implement insert
+		this.connection = SQLiteJDBCHelper.initConnection(this.connection);
+		this.statement = SQLiteJDBCHelper.initStatement(this.statement, this.connection);
 
+		// just insert the new computer (there's nothing distinct)
+		final StringBuffer queryString = new StringBuffer();
+		queryString.append("INSERT INTO computer ");
+		queryString.append("            (com_id, ");
+		queryString.append("             com_name) ");
+		queryString.append("VALUES      (NULL, ");
+		queryString.append("             '" + computer.getName() + "'); ");
+
+		try {
+			this.statement.executeUpdate(queryString.toString());
+		} catch (final SQLException e) {
+			e.printStackTrace();
+		}
+
+		this.statement = SQLiteJDBCHelper.closeStatement(this.statement);
+		this.connection = SQLiteJDBCHelper.closeConnection(this.connection);
 	}
 
 	/**
 	 * inserts new data in the network_interface_card entity
 	 */
-	private void insertNewNetworkInterfaceCard(final NetworkInterfaceCard networkInterfaceCard, final Integer computerId) {
-		// TODO: implement insert
+	private void insertNewNetworkInterfaceCard(NetworkInterfaceCard networkInterfaceCard) {
+		this.connection = SQLiteJDBCHelper.initConnection(this.connection);
+		this.statement = SQLiteJDBCHelper.initStatement(this.statement, this.connection);
 
+		// check whether this network interface card is already in the db (NIC_MAC_ADDRESS should be distinctly), if so
+		// do not insert, just update the old entry
+		// create HashMap to search for this network interface card
+		final HashMap<String, String> searchAttributes = new HashMap<String, String>();
+		searchAttributes.put("NIC_MAC_ADDRESS", networkInterfaceCard.getMacAddress());
+
+		// in this list should only be one entry (because of this implemented workaround)
+		List<NetworkInterfaceCard> results = this.searchNetworkInterfaceCardByAttributes(searchAttributes);
+
+		final StringBuffer queryString = new StringBuffer();
+		// if there's an entry in this list, the network interface card is already in db, just update the old entry
+		// with given computerId (and eventually the other data)
+		if (results.size() == 0) {
+			queryString.append("INSERT INTO network_interface_card ");
+			queryString.append("            (nic_id, ");
+			queryString.append("             nic_com_id, ");
+			queryString.append("             nic_mac_address, ");
+			queryString.append("             nic_ip_address, ");
+			queryString.append("             nic_subnet_mask, ");
+			queryString.append("             nic_dns, ");
+			queryString.append("             nic_gateway, ");
+			queryString.append("             nic_domain) ");
+			queryString.append("VALUES      (NULL, ");
+			queryString.append("             '" + networkInterfaceCard.getComputerId() + "', ");
+			queryString.append("             '" + networkInterfaceCard.getMacAddress() + "', ");
+			queryString.append("             '" + networkInterfaceCard.getIpAddress() + "', ");
+			queryString.append("             '" + networkInterfaceCard.getSubnetMask() + "', ");
+			queryString.append("             '" + networkInterfaceCard.getDns() + "', ");
+			queryString.append("             '" + networkInterfaceCard.getGateway() + "', ");
+			queryString.append("             '" + networkInterfaceCard.getDomain() + "'); ");
+
+			// get the just inserted software (need the id for the mapping table)
+			results = this.searchNetworkInterfaceCardByAttributes(searchAttributes);
+		}
+
+		for (final NetworkInterfaceCard nic : results) {
+			networkInterfaceCard = nic;
+		}
+
+		try {
+			this.statement.executeUpdate(queryString.toString());
+			this.updateNetworkInterfaceCard(networkInterfaceCard);
+		} catch (final SQLException e) {
+			e.printStackTrace();
+		}
+
+		this.statement = SQLiteJDBCHelper.closeStatement(this.statement);
+		this.connection = SQLiteJDBCHelper.closeConnection(this.connection);
 	}
 
 	/**
 	 * inserts new data in the operating_system entity
 	 */
-	private void insertNewOperatingSystem(final OperatingSystem operatingSystem, final Integer computerId) {
-		// TODO: implement insert
+	private void insertNewOperatingSystem(OperatingSystem operatingSystem, final Integer computerId) {
+		this.connection = SQLiteJDBCHelper.initConnection(this.connection);
+		this.statement = SQLiteJDBCHelper.initStatement(this.statement, this.connection);
 
+		// check whether this operating system is already in the db, if so do not insert, just map it to the com_id
+		// create HashMap to search for this operating system
+		final HashMap<String, String> searchAttributes = new HashMap<String, String>();
+		searchAttributes.put("OSY_NAME", operatingSystem.getName());
+
+		// in this list should only be one entry (because of this implemented workaround)
+		List<OperatingSystem> results = this.searchOperatingSystemByAttributes(searchAttributes);
+
+		final StringBuffer queryString = new StringBuffer();
+		// if there's an entry in this list, the operating system is already in db, just fill the mapping
+		// with given computerId and operatingSystemId
+		if (results.size() == 0) {
+			queryString.append("INSERT INTO operating_system ");
+			queryString.append("            (osy_id, ");
+			queryString.append("             osy_name, ");
+			queryString.append("             osy_description) ");
+			queryString.append("VALUES      (NULL, ");
+			queryString.append("             '" + operatingSystem.getName() + "', ");
+			queryString.append("             '" + operatingSystem.getDescription() + "'); ");
+
+			// get the just inserted software (need the id for the mapping table)
+			results = this.searchOperatingSystemByAttributes(searchAttributes);
+		}
+
+		for (final OperatingSystem os : results) {
+			operatingSystem = os;
+		}
+
+		// fill the mapping table between software <-> computer
+		final StringBuffer queryStringForMapping = new StringBuffer();
+		queryStringForMapping.append("INSERT INTO mapping_computer_operating_system ");
+		queryStringForMapping.append("            (mco_id, ");
+		queryStringForMapping.append("             mco_com_id, ");
+		queryStringForMapping.append("             mco_osy_id) ");
+		queryStringForMapping.append("VALUES      (NULL, ");
+		queryStringForMapping.append("             " + computerId + ", ");
+		queryStringForMapping.append("             " + operatingSystem.getId() + "); ");
+
+		try {
+			this.statement.executeUpdate(queryString.toString());
+			this.statement.executeUpdate(queryStringForMapping.toString());
+		} catch (final SQLException e) {
+			e.printStackTrace();
+		}
+
+		this.statement = SQLiteJDBCHelper.closeStatement(this.statement);
+		this.connection = SQLiteJDBCHelper.closeConnection(this.connection);
 	}
 
 	/**
@@ -435,8 +646,6 @@ public class SQLiteImpl implements IDatabaseOperations {
 	private void insertNewSoftware(Software software, final Integer computerId) {
 		this.connection = SQLiteJDBCHelper.initConnection(this.connection);
 		this.statement = SQLiteJDBCHelper.initStatement(this.statement, this.connection);
-
-		final StringBuffer queryString = new StringBuffer();
 
 		// check whether this software is already in the db, if so do not insert, just map it to the com_id
 		// create HashMap to search for this software
@@ -447,6 +656,9 @@ public class SQLiteImpl implements IDatabaseOperations {
 		// in this list should only be one entry (because of this implemented workaround)
 		List<Software> results = this.searchSoftwareByAttributes(searchAttributes);
 
+		final StringBuffer queryString = new StringBuffer();
+		// if there's an entry in this list, the software is already in db, just fill the mapping
+		// with given computerId and softwareId
 		if (results.size() == 0) {
 			queryString.append("INSERT INTO software ");
 			queryString.append("            (sof_id, ");
@@ -456,11 +668,14 @@ public class SQLiteImpl implements IDatabaseOperations {
 			queryString.append("VALUES      (NULL, ");
 			queryString.append("             '" + software.getName() + "', ");
 			queryString.append("             '" + software.getDescription() + "', ");
-			queryString.append("             '" + software.getVersionNumber() + "') ");
+			queryString.append("             '" + software.getVersionNumber() + "'); ");
 
 			// get the just inserted software (need the id for the mapping table)
 			results = this.searchSoftwareByAttributes(searchAttributes);
-			software = results.get(0);
+		}
+
+		for (final Software sw : results) {
+			software = sw;
 		}
 
 		// fill the mapping table between software <-> computer
@@ -471,7 +686,7 @@ public class SQLiteImpl implements IDatabaseOperations {
 		queryStringForMapping.append("             mcs_sof_id) ");
 		queryStringForMapping.append("VALUES      (NULL, ");
 		queryStringForMapping.append("             " + computerId + ", ");
-		queryStringForMapping.append("             " + software.getId());
+		queryStringForMapping.append("             " + software.getId() + "); ");
 
 		try {
 			this.statement.executeUpdate(queryString.toString());
@@ -480,6 +695,7 @@ public class SQLiteImpl implements IDatabaseOperations {
 			e.printStackTrace();
 		}
 
+		this.statement = SQLiteJDBCHelper.closeStatement(this.statement);
 		this.connection = SQLiteJDBCHelper.closeConnection(this.connection);
 	}
 
@@ -497,7 +713,7 @@ public class SQLiteImpl implements IDatabaseOperations {
 		queryString.append("                      FROM   computer ");
 		queryString.append("                      WHERE  com_id = " + computer.getId() + ") + 1, ");
 		queryString.append("       com_name = '" + computer.getName() + "' ");
-		queryString.append("WHERE  com_id = " + computer.getId());
+		queryString.append("WHERE  com_id = " + computer.getId() + "; ");
 
 		try {
 			this.statement.executeUpdate(queryString.toString());
@@ -505,6 +721,7 @@ public class SQLiteImpl implements IDatabaseOperations {
 			e.printStackTrace();
 		}
 
+		this.statement = SQLiteJDBCHelper.closeStatement(this.statement);
 		this.connection = SQLiteJDBCHelper.closeConnection(this.connection);
 	}
 
@@ -528,7 +745,7 @@ public class SQLiteImpl implements IDatabaseOperations {
 		queryString.append("       nic_dns = '" + networkInterfaceCard.getDns() + "', ");
 		queryString.append("       nic_gateway = '" + networkInterfaceCard.getGateway() + "', ");
 		queryString.append("       nic_domain = '" + networkInterfaceCard.getDomain() + "' ");
-		queryString.append("WHERE  nic_id = " + networkInterfaceCard.getId());
+		queryString.append("WHERE  nic_id = " + networkInterfaceCard.getId() + "; ");
 
 		try {
 			this.statement.executeUpdate(queryString.toString());
@@ -536,6 +753,7 @@ public class SQLiteImpl implements IDatabaseOperations {
 			e.printStackTrace();
 		}
 
+		this.statement = SQLiteJDBCHelper.closeStatement(this.statement);
 		this.connection = SQLiteJDBCHelper.closeConnection(this.connection);
 	}
 
@@ -554,7 +772,7 @@ public class SQLiteImpl implements IDatabaseOperations {
 		queryString.append("                      WHERE  osy_id = " + operatingSystem.getId() + ") + 1, ");
 		queryString.append("       osy_name = '" + operatingSystem.getName() + "', ");
 		queryString.append("       osy_description = '" + operatingSystem.getDescription() + "' ");
-		queryString.append("WHERE  osy_id = " + operatingSystem.getId());
+		queryString.append("WHERE  osy_id = " + operatingSystem.getId() + "; ");
 
 		try {
 			this.statement.executeUpdate(queryString.toString());
@@ -562,6 +780,7 @@ public class SQLiteImpl implements IDatabaseOperations {
 			e.printStackTrace();
 		}
 
+		this.statement = SQLiteJDBCHelper.closeStatement(this.statement);
 		this.connection = SQLiteJDBCHelper.closeConnection(this.connection);
 	}
 
@@ -581,7 +800,7 @@ public class SQLiteImpl implements IDatabaseOperations {
 		queryString.append("       sof_name = '" + software.getName() + "', ");
 		queryString.append("       sof_description = '" + software.getDescription() + "', ");
 		queryString.append("       sof_version_number = '" + software.getVersionNumber() + "' ");
-		queryString.append("WHERE  sof_id = " + software.getId());
+		queryString.append("WHERE  sof_id = " + software.getId() + "; ");
 
 		try {
 			this.statement.executeUpdate(queryString.toString());
@@ -589,6 +808,7 @@ public class SQLiteImpl implements IDatabaseOperations {
 			e.printStackTrace();
 		}
 
+		this.statement = SQLiteJDBCHelper.closeStatement(this.statement);
 		this.connection = SQLiteJDBCHelper.closeConnection(this.connection);
 	}
 }

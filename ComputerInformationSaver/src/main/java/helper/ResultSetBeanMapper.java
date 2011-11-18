@@ -127,15 +127,19 @@ public class ResultSetBeanMapper {
 		while (resultSet.next()) {
 			final SearchResult searchResult = new SearchResult();
 
+			searchResult.setComputerId(resultSet.getInt("COM_ID"));
 			searchResult.setComputerName(resultSet.getString("COM_NAME"));
+			searchResult.setNicId(resultSet.getInt("NIC_ID"));
 			searchResult.setNicMacAddress(resultSet.getString("NIC_MAC_ADDRESS"));
 			searchResult.setNicIpAddress(resultSet.getString("NIC_IP_ADDRESS"));
 			searchResult.setNicSubnetMask(resultSet.getString("NIC_SUBNET_MASK"));
 			searchResult.setNicDns(resultSet.getString("NIC_DNS"));
 			searchResult.setNicGateway(resultSet.getString("NIC_GATEWAY"));
 			searchResult.setNicDomain(resultSet.getString("NIC_DOMAIN"));
+			searchResult.setOsId(resultSet.getInt("OSY_ID"));
 			searchResult.setOsName(resultSet.getString("OSY_NAME"));
 			searchResult.setOsDescription(resultSet.getString("OSY_DESCRIPTION"));
+			searchResult.setSoftwareId(resultSet.getInt("SOF_ID"));
 			searchResult.setSoftwareName(resultSet.getString("SOF_NAME"));
 			searchResult.setSoftwareDescription(resultSet.getString("SOF_DESCRIPTION"));
 			searchResult.setSoftwareVersionNumber(resultSet.getString("SOF_VERSION_NUMBER"));

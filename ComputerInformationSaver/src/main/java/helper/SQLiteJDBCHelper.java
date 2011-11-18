@@ -43,6 +43,27 @@ public class SQLiteJDBCHelper {
 	}
 
 	/**
+	 * closes a given statement
+	 * <p>
+	 * </p>
+	 * 
+	 * @author ETHALON: tmy
+	 * 
+	 * @param statement
+	 * @return Statement statement
+	 */
+	public static Statement closeStatement(final Statement statement) {
+		try {
+			statement.close();
+
+		} catch (final SQLException e) {
+			e.printStackTrace();
+		}
+
+		return statement;
+	}
+
+	/**
 	 * 
 	 * inits a given connection
 	 * <p>
@@ -70,7 +91,7 @@ public class SQLiteJDBCHelper {
 
 	/**
 	 * 
-	 * TODO tmy (16.11.2011): Insert javadoc for method helper.SQLiteJDBCHelper.initStatement.
+	 * inits a given statement by given connection
 	 * <p>
 	 * </p>
 	 * 
