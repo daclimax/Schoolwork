@@ -77,7 +77,7 @@ public class SQLiteJDBCHelper {
 	public static Connection initConnection(Connection connection) {
 		try {
 			Class.forName("org.sqlite.JDBC");
-			connection = DriverManager.getConnection("jdbc:sqlite:ComputerDB");
+			connection = DriverManager.getConnection("jdbc:sqlite:database/ComputerDB");
 
 		} catch (final ClassNotFoundException e) {
 			e.printStackTrace();

@@ -185,15 +185,15 @@ public class SQLiteImpl implements IDatabaseOperations {
 		queryString.append("       sof_description, ");
 		queryString.append("       sof_version_number ");
 		queryString.append("FROM   computer ");
-		queryString.append("       INNER JOIN network_interface_card ");
+		queryString.append("       LEFT JOIN network_interface_card ");
 		queryString.append("         ON com_id = nic_com_id ");
-		queryString.append("       INNER JOIN mapping_computer_operating_system ");
+		queryString.append("       LEFT JOIN mapping_computer_operating_system ");
 		queryString.append("         ON com_id = mco_com_id ");
-		queryString.append("       INNER JOIN operating_system ");
+		queryString.append("       LEFT JOIN operating_system ");
 		queryString.append("         ON mco_osy_id = osy_id ");
-		queryString.append("       INNER JOIN mapping_computer_software ");
+		queryString.append("       LEFT JOIN mapping_computer_software ");
 		queryString.append("         ON com_id = mcs_com_id ");
-		queryString.append("       INNER JOIN software ");
+		queryString.append("       LEFT JOIN software ");
 		queryString.append("         ON mcs_sof_id = sof_id ");
 
 		// build the where-part of the query
@@ -394,24 +394,24 @@ public class SQLiteImpl implements IDatabaseOperations {
 		this.connection = SQLiteJDBCHelper.initConnection(this.connection);
 		this.statement = SQLiteJDBCHelper.initStatement(this.statement, this.connection);
 
-		// delete computer from the computer table
-		final StringBuilder queryString = new StringBuilder();
-		queryString.append("DELETE FROM computer ");
-		queryString.append("WHERE      com_id = " + computer.getId() + "; ");
+		// set the deleted flag = 1 on computer table
+		final StringBuffer queryString = new StringBuffer();
+		queryString.append("UPDATE computer ");
+		queryString.append("SET    com_deleted = 1");
+		queryString.append("WHERE  com_id = " + computer.getId() + "; ");
 
-		// delete computer from mapping table (mapping_computer_operating_system)
+		// set the deleted flag = 1 on mapping_computer_operating_system table
 		final StringBuilder queryStringMappingOperatingSystem = new StringBuilder();
-		queryString.append("DELETE FROM mapping_computer_operating_system ");
-		queryString.append("WHERE      mco_com_id = " + computer.getId() + "; ");
+		queryStringMappingOperatingSystem.append("UPDATE mapping_computer_operating_system ");
+		queryStringMappingOperatingSystem.append("SET    mco_deleted = 1");
+		queryStringMappingOperatingSystem.append("WHERE  mco_com_id = " + computer.getId() + "; ");
 
-		// delete computer from mapping table (mapping_computer_software)
+		// set the deleted flag = 1 on mapping_computer_software table
 		final StringBuilder queryStringMappingSoftware = new StringBuilder();
-		queryString.append("DELETE FROM mapping_computer_software ");
-		queryString.append("WHERE      mcs_com_id = " + computer.getId() + "; ");
+		queryStringMappingSoftware.append("UPDATE mapping_computer_software ");
+		queryStringMappingSoftware.append("SET    mcs_deleted = 1");
+		queryStringMappingSoftware.append("WHERE  mcs_com_id = " + computer.getId() + "; ");
 
-		System.out.println(queryString);
-		System.out.println(queryStringMappingOperatingSystem);
-		System.out.println(queryStringMappingSoftware);
 		try {
 			this.statement.executeUpdate(queryString.toString());
 			this.statement.executeUpdate(queryStringMappingOperatingSystem.toString());
@@ -431,10 +431,11 @@ public class SQLiteImpl implements IDatabaseOperations {
 		this.connection = SQLiteJDBCHelper.initConnection(this.connection);
 		this.statement = SQLiteJDBCHelper.initStatement(this.statement, this.connection);
 
-		// delete networkInterfaceCard from the network_interface_card table
+		// set the deleted flag = 1 on network_interface_card table
 		final StringBuilder queryString = new StringBuilder();
-		queryString.append("DELETE FROM network_interface_card ");
-		queryString.append("WHERE      nic_id = " + networkInterfaceCard.getId() + "; ");
+		queryString.append("UPDATE network_interface_card ");
+		queryString.append("SET    nic_deleted = 1");
+		queryString.append("WHERE  nic_id = " + networkInterfaceCard.getId() + "; ");
 
 		try {
 			this.statement.executeUpdate(queryString.toString());
@@ -453,15 +454,17 @@ public class SQLiteImpl implements IDatabaseOperations {
 		this.connection = SQLiteJDBCHelper.initConnection(this.connection);
 		this.statement = SQLiteJDBCHelper.initStatement(this.statement, this.connection);
 
-		// delete operatingSystem from the operating_system table
+		// set the deleted flag = 1 on operating_system table
 		final StringBuilder queryString = new StringBuilder();
-		queryString.append("DELETE FROM operating_system ");
-		queryString.append("WHERE      osy_id = " + operatingSystem.getId() + "; ");
+		queryString.append("UPDATE operating_system ");
+		queryString.append("SET    osy_deleted = 1");
+		queryString.append("WHERE  osy_id = " + operatingSystem.getId() + "; ");
 
-		// delete operatingSystem from mapping table (mapping_computer_operating_system)
+		// set the deleted flag = 1 on mapping_computer_operating_system table
 		final StringBuilder queryStringMappingOperatingSystem = new StringBuilder();
-		queryString.append("DELETE FROM mapping_computer_operating_system ");
-		queryString.append("WHERE      mco_osy_id = " + operatingSystem.getId() + "; ");
+		queryStringMappingOperatingSystem.append("UPDATE mapping_computer_operating_system ");
+		queryStringMappingOperatingSystem.append("SET    mco_deleted = 1");
+		queryStringMappingOperatingSystem.append("WHERE  mco_osy_id = " + operatingSystem.getId() + "; ");
 
 		try {
 			this.statement.executeUpdate(queryString.toString());
@@ -481,15 +484,17 @@ public class SQLiteImpl implements IDatabaseOperations {
 		this.connection = SQLiteJDBCHelper.initConnection(this.connection);
 		this.statement = SQLiteJDBCHelper.initStatement(this.statement, this.connection);
 
-		// delete software from the software table
+		// set the deleted flag = 1 on software table
 		final StringBuilder queryString = new StringBuilder();
-		queryString.append("DELETE FROM software ");
-		queryString.append("WHERE      sof_id = " + software.getId() + "; ");
+		queryString.append("UPDATE software ");
+		queryString.append("SET    sof_deleted = 1");
+		queryString.append("WHERE  sof_id = " + software.getId() + "; ");
 
-		// delete software from mapping table (mapping_computer_software)
+		// set the deleted flag = 1 on mapping_computer_software table
 		final StringBuilder queryStringMappingSoftware = new StringBuilder();
-		queryString.append("DELETE FROM mapping_computer_software ");
-		queryString.append("WHERE      mcs_sof_id = " + software.getId() + "; ");
+		queryStringMappingSoftware.append("UPDATE mapping_computer_software ");
+		queryStringMappingSoftware.append("SET    mcs_deleted = 1");
+		queryStringMappingSoftware.append("WHERE  mcs_sof_id = " + software.getId() + "; ");
 
 		try {
 			this.statement.executeUpdate(queryString.toString());
