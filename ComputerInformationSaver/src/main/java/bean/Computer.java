@@ -47,11 +47,8 @@ public class Computer extends SuperBean {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("Computer [computerName=");
-		builder.append(this.name);
-		builder.append(", toString()=");
+		builder.append("\nComputer Name: " + this.name);
 		builder.append(super.toString());
-		builder.append("]");
 		return builder.toString();
 	}
 

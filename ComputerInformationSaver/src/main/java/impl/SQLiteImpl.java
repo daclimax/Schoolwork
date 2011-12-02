@@ -397,22 +397,23 @@ public class SQLiteImpl implements IDatabaseOperations {
 		// set the deleted flag = 1 on computer table
 		final StringBuffer queryString = new StringBuffer();
 		queryString.append("UPDATE computer ");
-		queryString.append("SET    com_deleted = 1");
+		queryString.append("SET    com_deleted = 1 ");
 		queryString.append("WHERE  com_id = " + computer.getId() + "; ");
 
 		// set the deleted flag = 1 on mapping_computer_operating_system table
 		final StringBuilder queryStringMappingOperatingSystem = new StringBuilder();
 		queryStringMappingOperatingSystem.append("UPDATE mapping_computer_operating_system ");
-		queryStringMappingOperatingSystem.append("SET    mco_deleted = 1");
+		queryStringMappingOperatingSystem.append("SET    mco_deleted = 1 ");
 		queryStringMappingOperatingSystem.append("WHERE  mco_com_id = " + computer.getId() + "; ");
 
 		// set the deleted flag = 1 on mapping_computer_software table
 		final StringBuilder queryStringMappingSoftware = new StringBuilder();
 		queryStringMappingSoftware.append("UPDATE mapping_computer_software ");
-		queryStringMappingSoftware.append("SET    mcs_deleted = 1");
+		queryStringMappingSoftware.append("SET    mcs_deleted = 1 ");
 		queryStringMappingSoftware.append("WHERE  mcs_com_id = " + computer.getId() + "; ");
 
 		try {
+			System.out.println(queryString);
 			this.statement.executeUpdate(queryString.toString());
 			this.statement.executeUpdate(queryStringMappingOperatingSystem.toString());
 			this.statement.executeUpdate(queryStringMappingSoftware.toString());
@@ -434,7 +435,7 @@ public class SQLiteImpl implements IDatabaseOperations {
 		// set the deleted flag = 1 on network_interface_card table
 		final StringBuilder queryString = new StringBuilder();
 		queryString.append("UPDATE network_interface_card ");
-		queryString.append("SET    nic_deleted = 1");
+		queryString.append("SET    nic_deleted = 1 ");
 		queryString.append("WHERE  nic_id = " + networkInterfaceCard.getId() + "; ");
 
 		try {
@@ -457,13 +458,13 @@ public class SQLiteImpl implements IDatabaseOperations {
 		// set the deleted flag = 1 on operating_system table
 		final StringBuilder queryString = new StringBuilder();
 		queryString.append("UPDATE operating_system ");
-		queryString.append("SET    osy_deleted = 1");
+		queryString.append("SET    osy_deleted = 1 ");
 		queryString.append("WHERE  osy_id = " + operatingSystem.getId() + "; ");
 
 		// set the deleted flag = 1 on mapping_computer_operating_system table
 		final StringBuilder queryStringMappingOperatingSystem = new StringBuilder();
 		queryStringMappingOperatingSystem.append("UPDATE mapping_computer_operating_system ");
-		queryStringMappingOperatingSystem.append("SET    mco_deleted = 1");
+		queryStringMappingOperatingSystem.append("SET    mco_deleted = 1 ");
 		queryStringMappingOperatingSystem.append("WHERE  mco_osy_id = " + operatingSystem.getId() + "; ");
 
 		try {
@@ -487,13 +488,13 @@ public class SQLiteImpl implements IDatabaseOperations {
 		// set the deleted flag = 1 on software table
 		final StringBuilder queryString = new StringBuilder();
 		queryString.append("UPDATE software ");
-		queryString.append("SET    sof_deleted = 1");
+		queryString.append("SET    sof_deleted = 1 ");
 		queryString.append("WHERE  sof_id = " + software.getId() + "; ");
 
 		// set the deleted flag = 1 on mapping_computer_software table
 		final StringBuilder queryStringMappingSoftware = new StringBuilder();
 		queryStringMappingSoftware.append("UPDATE mapping_computer_software ");
-		queryStringMappingSoftware.append("SET    mcs_deleted = 1");
+		queryStringMappingSoftware.append("SET    mcs_deleted = 1 ");
 		queryStringMappingSoftware.append("WHERE  mcs_sof_id = " + software.getId() + "; ");
 
 		try {

@@ -91,13 +91,9 @@ public class SuperBean {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("SuperBean [deleted=");
-		builder.append(this.deleted);
-		builder.append(", id=");
-		builder.append(this.id);
-		builder.append(", version=");
-		builder.append(this.version);
-		builder.append("]");
+		builder.append("\nDeleted: " + this.deleted);
+		builder.append("\nID: " + this.id);
+		builder.append("\nVersion: " + this.version);
 		return builder.toString();
 	}
 

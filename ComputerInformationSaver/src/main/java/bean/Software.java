@@ -92,15 +92,10 @@ public class Software extends SuperBean {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("Software [description=");
-		builder.append(this.description);
-		builder.append(", name=");
-		builder.append(this.name);
-		builder.append(", versionNumber=");
-		builder.append(this.versionNumber);
-		builder.append(", toString()=");
+		builder.append("\nName: " + this.name);
+		builder.append("\nDescription: " + this.description);
+		builder.append("\nVersionsnummer: " + this.versionNumber);
 		builder.append(super.toString());
-		builder.append("]");
 		return builder.toString();
 	}
 }

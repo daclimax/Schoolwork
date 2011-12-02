@@ -69,13 +69,9 @@ public class OperatingSystem extends SuperBean {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("OperatingSystem [description=");
-		builder.append(this.description);
-		builder.append(", name=");
-		builder.append(this.name);
-		builder.append(", toString()=");
+		builder.append("\nName: " + this.name);
+		builder.append("\nDescription: " + this.description);
 		builder.append(super.toString());
-		builder.append("]");
 		return builder.toString();
 	}
 

@@ -370,31 +370,23 @@ public class SearchResult {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("SearchResult [ computerName=");
-		builder.append(this.computerName);
-		builder.append(", nicDns=");
-		builder.append(this.nicDns);
-		builder.append(", nicDomain=");
-		builder.append(this.nicDomain);
-		builder.append(", nicGateway=");
-		builder.append(this.nicGateway);
-		builder.append(", nicIpAddress=");
-		builder.append(this.nicIpAddress);
-		builder.append(", nicMacAddress=");
-		builder.append(this.nicMacAddress);
-		builder.append(", nicSubnetMask=");
-		builder.append(this.nicSubnetMask);
-		builder.append(", osDescription=");
-		builder.append(this.osDescription);
-		builder.append(", osName=");
-		builder.append(this.osName);
-		builder.append(", softwareDescription=");
-		builder.append(this.softwareDescription);
-		builder.append(", softwareName=");
-		builder.append(this.softwareName);
-		builder.append(", softwareVersionNumber=");
-		builder.append(this.softwareVersionNumber);
-		builder.append("]");
+
+		builder.append("\nComputer ID: " + this.computerId);
+		builder.append("\nComputer Name: " + this.computerName);
+		builder.append("\nNIC ID: " + this.nicId);
+		builder.append("\nNIC MAC: " + this.nicMacAddress);
+		builder.append("\nNIC IP: " + this.nicIpAddress);
+		builder.append("\nNIC Subnetz Maske: " + this.nicSubnetMask);
+		builder.append("\nNIC DNS: " + this.nicDns);
+		builder.append("\nNIC Gateway: " + this.nicGateway);
+		builder.append("\nNIC Domain: " + this.nicDomain);
+		builder.append("\nOperating System ID: " + this.osId);
+		builder.append("\nOperating System Name: " + this.osName);
+		builder.append("\nOperating System Description: " + this.osDescription);
+		builder.append("\nSoftware ID: " + this.softwareId);
+		builder.append("\nSoftware Name: " + this.softwareName);
+		builder.append("\nSoftware Description: " + this.softwareDescription);
+		builder.append("\nSoftware Version: " + this.softwareVersionNumber);
 		return builder.toString();
 	}
 
