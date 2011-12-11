@@ -336,6 +336,7 @@ public class SQLiteImpl implements IDatabaseOperations {
 		final StringBuffer queryString = new StringBuffer();
 		queryString.append("SELECT sof_id, ");
 		queryString.append("       sof_name, ");
+		queryString.append("       sof_version_number, ");
 		queryString.append("       sof_description ");
 		queryString.append("FROM   software ");
 
@@ -353,7 +354,6 @@ public class SQLiteImpl implements IDatabaseOperations {
 				}
 			}
 		}
-		queryString.append("; ");
 
 		List<Software> results = null;
 
@@ -413,7 +413,6 @@ public class SQLiteImpl implements IDatabaseOperations {
 		queryStringMappingSoftware.append("WHERE  mcs_com_id = " + computer.getId() + "; ");
 
 		try {
-			System.out.println(queryString);
 			this.statement.executeUpdate(queryString.toString());
 			this.statement.executeUpdate(queryStringMappingOperatingSystem.toString());
 			this.statement.executeUpdate(queryStringMappingSoftware.toString());
@@ -537,8 +536,6 @@ public class SQLiteImpl implements IDatabaseOperations {
 	 * inserts new data in the network_interface_card entity
 	 */
 	private void insertNewNetworkInterfaceCard(NetworkInterfaceCard networkInterfaceCard) {
-		this.connection = SQLiteJDBCHelper.initConnection(this.connection);
-		this.statement = SQLiteJDBCHelper.initStatement(this.statement, this.connection);
 
 		// check whether this network interface card is already in the db (NIC_MAC_ADDRESS should be distinctly), if so
 		// do not insert, just update the old entry
@@ -579,6 +576,9 @@ public class SQLiteImpl implements IDatabaseOperations {
 			networkInterfaceCard = nic;
 		}
 
+		this.connection = SQLiteJDBCHelper.initConnection(this.connection);
+		this.statement = SQLiteJDBCHelper.initStatement(this.statement, this.connection);
+
 		try {
 			this.statement.executeUpdate(queryString.toString());
 			this.updateNetworkInterfaceCard(networkInterfaceCard);
@@ -594,8 +594,6 @@ public class SQLiteImpl implements IDatabaseOperations {
 	 * inserts new data in the operating_system entity
 	 */
 	private void insertNewOperatingSystem(OperatingSystem operatingSystem, final Integer computerId) {
-		this.connection = SQLiteJDBCHelper.initConnection(this.connection);
-		this.statement = SQLiteJDBCHelper.initStatement(this.statement, this.connection);
 
 		// check whether this operating system is already in the db, if so do not insert, just map it to the com_id
 		// create HashMap to search for this operating system
@@ -617,6 +615,18 @@ public class SQLiteImpl implements IDatabaseOperations {
 			queryString.append("             '" + operatingSystem.getName() + "', ");
 			queryString.append("             '" + operatingSystem.getDescription() + "'); ");
 
+			this.connection = SQLiteJDBCHelper.initConnection(this.connection);
+			this.statement = SQLiteJDBCHelper.initStatement(this.statement, this.connection);
+
+			try {
+				this.statement.executeUpdate(queryString.toString());
+			} catch (final SQLException e) {
+				e.printStackTrace();
+			}
+
+			this.statement = SQLiteJDBCHelper.closeStatement(this.statement);
+			this.connection = SQLiteJDBCHelper.closeConnection(this.connection);
+
 			// get the just inserted software (need the id for the mapping table)
 			results = this.searchOperatingSystemByAttributes(searchAttributes);
 		}
@@ -635,8 +645,10 @@ public class SQLiteImpl implements IDatabaseOperations {
 		queryStringForMapping.append("             " + computerId + ", ");
 		queryStringForMapping.append("             " + operatingSystem.getId() + "); ");
 
+		this.connection = SQLiteJDBCHelper.initConnection(this.connection);
+		this.statement = SQLiteJDBCHelper.initStatement(this.statement, this.connection);
+
 		try {
-			this.statement.executeUpdate(queryString.toString());
 			this.statement.executeUpdate(queryStringForMapping.toString());
 		} catch (final SQLException e) {
 			e.printStackTrace();
@@ -650,8 +662,6 @@ public class SQLiteImpl implements IDatabaseOperations {
 	 * inserts new data in the software entity
 	 */
 	private void insertNewSoftware(Software software, final Integer computerId) {
-		this.connection = SQLiteJDBCHelper.initConnection(this.connection);
-		this.statement = SQLiteJDBCHelper.initStatement(this.statement, this.connection);
 
 		// check whether this software is already in the db, if so do not insert, just map it to the com_id
 		// create HashMap to search for this software
@@ -676,6 +686,19 @@ public class SQLiteImpl implements IDatabaseOperations {
 			queryString.append("             '" + software.getDescription() + "', ");
 			queryString.append("             '" + software.getVersionNumber() + "'); ");
 
+			// execute the insert, if this software isn't already in DB
+			this.connection = SQLiteJDBCHelper.initConnection(this.connection);
+			this.statement = SQLiteJDBCHelper.initStatement(this.statement, this.connection);
+
+			try {
+				this.statement.executeUpdate(queryString.toString());
+			} catch (final SQLException e) {
+				e.printStackTrace();
+			}
+
+			this.statement = SQLiteJDBCHelper.closeStatement(this.statement);
+			this.connection = SQLiteJDBCHelper.closeConnection(this.connection);
+
 			// get the just inserted software (need the id for the mapping table)
 			results = this.searchSoftwareByAttributes(searchAttributes);
 		}
@@ -694,8 +717,11 @@ public class SQLiteImpl implements IDatabaseOperations {
 		queryStringForMapping.append("             " + computerId + ", ");
 		queryStringForMapping.append("             " + software.getId() + "); ");
 
+		this.connection = SQLiteJDBCHelper.initConnection(this.connection);
+		this.statement = SQLiteJDBCHelper.initStatement(this.statement, this.connection);
+
 		try {
-			this.statement.executeUpdate(queryString.toString());
+
 			this.statement.executeUpdate(queryStringForMapping.toString());
 		} catch (final SQLException e) {
 			e.printStackTrace();
@@ -717,8 +743,11 @@ public class SQLiteImpl implements IDatabaseOperations {
 		queryString.append("UPDATE computer ");
 		queryString.append("SET    com_version = (SELECT com_version ");
 		queryString.append("                      FROM   computer ");
-		queryString.append("                      WHERE  com_id = " + computer.getId() + ") + 1, ");
-		queryString.append("       com_name = '" + computer.getName() + "' ");
+		queryString.append("                      WHERE  com_id = " + computer.getId() + ") + 1 ");
+		// check which attributes are set, to update them
+		if ((computer.getName() != null) && !computer.getName().equals("")) {
+			queryString.append("       ,com_name = '" + computer.getName() + "' ");
+		}
 		queryString.append("WHERE  com_id = " + computer.getId() + "; ");
 
 		try {
@@ -743,14 +772,29 @@ public class SQLiteImpl implements IDatabaseOperations {
 		queryString.append("UPDATE network_interface_card ");
 		queryString.append("SET    nic_version = (SELECT nic_version ");
 		queryString.append("                      FROM   network_interface_card ");
-		queryString.append("                      WHERE  nic_id = " + networkInterfaceCard.getId() + ") + 1, ");
-		queryString.append("       nic_com_id = '" + networkInterfaceCard.getComputerId() + "', ");
-		queryString.append("       nic_mac_address = '" + networkInterfaceCard.getMacAddress() + "', ");
-		queryString.append("       nic_ip_address = '" + networkInterfaceCard.getIpAddress() + "', ");
-		queryString.append("       nic_subnet_mask = '" + networkInterfaceCard.getSubnetMask() + "', ");
-		queryString.append("       nic_dns = '" + networkInterfaceCard.getDns() + "', ");
-		queryString.append("       nic_gateway = '" + networkInterfaceCard.getGateway() + "', ");
-		queryString.append("       nic_domain = '" + networkInterfaceCard.getDomain() + "' ");
+		queryString.append("                      WHERE  nic_id = " + networkInterfaceCard.getId() + ") + 1 ");
+		// check which attributes are set, to update them
+		if (networkInterfaceCard.getComputerId() != null) {
+			queryString.append("       ,nic_com_id = '" + networkInterfaceCard.getComputerId() + "' ");
+		}
+		if ((networkInterfaceCard.getMacAddress() != null) && !networkInterfaceCard.getMacAddress().equals("")) {
+			queryString.append("       ,nic_mac_address = '" + networkInterfaceCard.getMacAddress() + "' ");
+		}
+		if ((networkInterfaceCard.getIpAddress() != null) && !networkInterfaceCard.getIpAddress().equals("")) {
+			queryString.append("       ,nic_ip_address = '" + networkInterfaceCard.getIpAddress() + "' ");
+		}
+		if ((networkInterfaceCard.getSubnetMask() != null) && !networkInterfaceCard.getSubnetMask().equals("")) {
+			queryString.append("       ,nic_subnet_mask = '" + networkInterfaceCard.getSubnetMask() + "' ");
+		}
+		if ((networkInterfaceCard.getDns() != null) && !networkInterfaceCard.getDns().equals("")) {
+			queryString.append("       ,nic_dns = '" + networkInterfaceCard.getDns() + "' ");
+		}
+		if ((networkInterfaceCard.getGateway() != null) && !networkInterfaceCard.getGateway().equals("")) {
+			queryString.append("       ,nic_gateway = '" + networkInterfaceCard.getGateway() + "' ");
+		}
+		if ((networkInterfaceCard.getDomain() != null) && !networkInterfaceCard.getDomain().equals("")) {
+			queryString.append("       ,nic_domain = '" + networkInterfaceCard.getDomain() + "' ");
+		}
 		queryString.append("WHERE  nic_id = " + networkInterfaceCard.getId() + "; ");
 
 		try {
@@ -775,9 +819,14 @@ public class SQLiteImpl implements IDatabaseOperations {
 		queryString.append("UPDATE operating_system ");
 		queryString.append("SET    osy_version = (SELECT osy_version ");
 		queryString.append("                      FROM   operating_system ");
-		queryString.append("                      WHERE  osy_id = " + operatingSystem.getId() + ") + 1, ");
-		queryString.append("       osy_name = '" + operatingSystem.getName() + "', ");
-		queryString.append("       osy_description = '" + operatingSystem.getDescription() + "' ");
+		queryString.append("                      WHERE  osy_id = " + operatingSystem.getId() + ") + 1 ");
+		// check which attributes are set, to update them
+		if ((operatingSystem.getName() != null) && !operatingSystem.getName().equals("")) {
+			queryString.append("       ,osy_name = '" + operatingSystem.getName() + "' ");
+		}
+		if ((operatingSystem.getDescription() != null) && !operatingSystem.getDescription().equals("")) {
+			queryString.append("       ,osy_description = '" + operatingSystem.getDescription() + "' ");
+		}
 		queryString.append("WHERE  osy_id = " + operatingSystem.getId() + "; ");
 
 		try {
@@ -802,10 +851,17 @@ public class SQLiteImpl implements IDatabaseOperations {
 		queryString.append("UPDATE software ");
 		queryString.append("SET    sof_version = (SELECT sof_version ");
 		queryString.append("                      FROM   software ");
-		queryString.append("                      WHERE  sof_id = " + software.getId() + ") + 1, ");
-		queryString.append("       sof_name = '" + software.getName() + "', ");
-		queryString.append("       sof_description = '" + software.getDescription() + "', ");
-		queryString.append("       sof_version_number = '" + software.getVersionNumber() + "' ");
+		queryString.append("                      WHERE  sof_id = " + software.getId() + ") + 1 ");
+		// check which attributes are set, to update them
+		if ((software.getName() != null) && !software.getName().equals("")) {
+			queryString.append("       ,sof_name = '" + software.getName() + "' ");
+		}
+		if ((software.getDescription() != null) && !software.getDescription().equals("")) {
+			queryString.append("       ,sof_description = '" + software.getDescription() + "' ");
+		}
+		if ((software.getVersionNumber() != null) && !software.getVersionNumber().equals("")) {
+			queryString.append("       ,sof_version_number = '" + software.getVersionNumber() + "' ");
+		}
 		queryString.append("WHERE  sof_id = " + software.getId() + "; ");
 
 		try {

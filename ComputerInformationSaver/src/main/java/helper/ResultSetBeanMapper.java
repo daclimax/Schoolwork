@@ -169,6 +169,7 @@ public class ResultSetBeanMapper {
 
 			software.setId(resultSet.getInt("SOF_ID"));
 			software.setName(resultSet.getString("SOF_NAME"));
+			software.setVersionNumber(resultSet.getString("SOF_VERSION_NUMBER"));
 			software.setDescription(resultSet.getString("SOF_DESCRIPTION"));
 			searchResults.add(software);
 		}

@@ -16,7 +16,7 @@ package bean;
 public class NetworkInterfaceCard extends SuperBean {
 
 	// references COMPUTER.COM_ID
-	private int computerId;
+	private Integer computerId;
 
 	// dns server ip address
 	private String dns;
@@ -48,7 +48,7 @@ public class NetworkInterfaceCard extends SuperBean {
 	 * 
 	 * @return Returns the computerId.
 	 */
-	public int getComputerId() {
+	public Integer getComputerId() {
 		return this.computerId;
 	}
 
@@ -112,7 +112,7 @@ public class NetworkInterfaceCard extends SuperBean {
 	 * @param computerId
 	 *            The computerId to set.
 	 */
-	public void setComputerId(final int computerId) {
+	public void setComputerId(final Integer computerId) {
 		this.computerId = computerId;
 	}
 

@@ -70,7 +70,7 @@ public class ConsoleImpl implements IUserInterface {
 			case 2: // delete networkInterfaceCard
 				// get the id to delete the networkInterfaceCard with given id
 				final NetworkInterfaceCard nic = new NetworkInterfaceCard();
-				System.out.println("\n\nGeben Sie die ID des zu löschenden Computers ein: ");
+				System.out.println("\n\nGeben Sie die ID der zu löschenden Netzwerkkarte ein: ");
 				final Scanner nicId = new Scanner(System.in);
 				nic.setId(nicId.nextInt());
 
@@ -83,7 +83,7 @@ public class ConsoleImpl implements IUserInterface {
 			case 3: // delete operatingSystem
 				// get the id to delete the operatingSystem with given id
 				final OperatingSystem os = new OperatingSystem();
-				System.out.println("\n\nGeben Sie die ID des zu löschenden Computers ein: ");
+				System.out.println("\n\nGeben Sie die ID des zu löschenden Betriebssystems ein: ");
 				final Scanner osId = new Scanner(System.in);
 				os.setId(osId.nextInt());
 
@@ -96,7 +96,7 @@ public class ConsoleImpl implements IUserInterface {
 			case 4: // delete software
 				// get the id to delete the operatingSystem with given id
 				final Software software = new Software();
-				System.out.println("\n\nGeben Sie die ID des zu löschenden Computers ein: ");
+				System.out.println("\n\nGeben Sie die ID der zu löschenden Software ein: ");
 				final Scanner softwareId = new Scanner(System.in);
 				software.setId(softwareId.nextInt());
 
@@ -117,11 +117,133 @@ public class ConsoleImpl implements IUserInterface {
 	}
 
 	public void insertNewComponent() {
+		Short insertSelection;
+		do {
+			System.out.println("\nWas für eine Komponente soll hinzugefügt werden?");
+			System.out.println("(1) Computer");
+			System.out.println("(2) Netzwerkkarte");
+			System.out.println("(3) Betriebssystem");
+			System.out.println("(4) Software");
+			System.out.println("(0) Zurück zum Hauptmenü");
+
+			System.out.println("\nAuswahl: ");
+
+			final Scanner insertInput = new Scanner(System.in);
+			insertSelection = insertInput.nextShort();
+
+			final List<String> messages;
+			switch (insertSelection) {
+
+			case 1: // insert new computer
+				final Computer computer = new Computer();
+				System.out.println("\n\nGeben Sie den Computernamen ein: ");
+				final Scanner computerInput = new Scanner(System.in);
+				computer.setName(computerInput.nextLine());
+
+				messages = this.logic.insertNewComponent(computer, null);
+				for (final String msg : messages) {
+					System.out.println(msg);
+				}
+				break;
+
+			case 2: // insert new networkInterfaceCard
+				final NetworkInterfaceCard nic = new NetworkInterfaceCard();
+				System.out.println("\n\nGeben Sie die Daten ein");
+				System.out.println("\nID des zugehörigen Computers: ");
+				Scanner nicInput = new Scanner(System.in);
+				nic.setComputerId(nicInput.nextInt());
+
+				System.out.println("MAC-Adresse: ");
+				nicInput = new Scanner(System.in);
+				nic.setMacAddress(nicInput.next());
+
+				System.out.println("IP-Adresse: ");
+				nicInput = new Scanner(System.in);
+				nic.setIpAddress(nicInput.next());
+
+				System.out.println("Subnetz Maske: ");
+				nicInput = new Scanner(System.in);
+				nic.setSubnetMask(nicInput.next());
+
+				System.out.println("Gateway: ");
+				nicInput = new Scanner(System.in);
+				nic.setGateway(nicInput.next());
+
+				System.out.println("DNS: ");
+				nicInput = new Scanner(System.in);
+				nic.setDns(nicInput.next());
+
+				System.out.println("Domäne: ");
+				nicInput = new Scanner(System.in);
+				nic.setDomain(nicInput.next());
+
+				messages = this.logic.insertNewComponent(nic, null);
+				for (final String msg : messages) {
+					System.out.println(msg);
+				}
+				break;
+
+			case 3: // insert new operatingSystem
+				final OperatingSystem os = new OperatingSystem();
+				Integer computerOsId;
+
+				System.out.println("\n\nGeben Sie die Daten ein");
+				System.out.println("\nID des zugehörigen Computers: ");
+				Scanner osInput = new Scanner(System.in);
+				computerOsId = osInput.nextInt();
+
+				System.out.println("Name: ");
+				osInput = new Scanner(System.in);
+				os.setName(osInput.nextLine());
+
+				System.out.println("Beschreibung: ");
+				osInput = new Scanner(System.in);
+				os.setDescription(osInput.nextLine());
+
+				messages = this.logic.insertNewComponent(os, computerOsId);
+				for (final String msg : messages) {
+					System.out.println(msg);
+				}
+				break;
+
+			case 4: // insert new software
+				final Software software = new Software();
+				Integer computerSoftwareId;
+
+				System.out.println("\n\nGeben Sie die Daten ein");
+				System.out.println("\nID des zugehörigen Computers: ");
+				Scanner softwareInput = new Scanner(System.in);
+				computerSoftwareId = softwareInput.nextInt();
+
+				System.out.println("Name: ");
+				softwareInput = new Scanner(System.in);
+				software.setName(softwareInput.nextLine());
+
+				System.out.println("Versionsnummer: ");
+				softwareInput = new Scanner(System.in);
+				software.setVersionNumber(softwareInput.nextLine());
+
+				System.out.println("Beschreibung: ");
+				softwareInput = new Scanner(System.in);
+				software.setDescription(softwareInput.nextLine());
+
+				messages = this.logic.insertNewComponent(software, computerSoftwareId);
+				for (final String msg : messages) {
+					System.out.println(msg);
+				}
+				break;
+
+			case 0: // exit to main menu
+				break;
+
+			default:
+				System.err.println("\nFalsche Eingabe!");
+			}
+		} while (insertSelection != 0);
 
 	}
 
 	public void search() {
-		// TODO Auto-generated method stub
 		Short searchSelection;
 		do {
 			System.out.println("\nWonach wollen Sie suchen?");
@@ -186,6 +308,7 @@ public class ConsoleImpl implements IUserInterface {
 				for (final SearchResult searchResult : results) {
 					System.out.println(searchResult.toString());
 				}
+
 				break;
 
 			case 2: // single component search - let the user chose the component, therefore there's a new switch-case.
@@ -218,9 +341,7 @@ public class ConsoleImpl implements IUserInterface {
 						final List<SuperBean> computers = this.logic.searchComponentsByAttributes(
 								componentSearchAttributes, "computer");
 						for (final SuperBean computer : computers) {
-							System.out.println("test");
 							if (computer instanceof Computer) {
-								System.out.println("test2");
 								System.out.println(computer.toString());
 							}
 						}
@@ -240,7 +361,7 @@ public class ConsoleImpl implements IUserInterface {
 								"nic");
 						for (final SuperBean nic : NICs) {
 							if (nic instanceof NetworkInterfaceCard) {
-								nic.toString();
+								System.out.println(nic.toString());
 							}
 						}
 
@@ -259,7 +380,7 @@ public class ConsoleImpl implements IUserInterface {
 								componentSearchAttributes, "operatingSystem");
 						for (final SuperBean os : operatingSystems) {
 							if (os instanceof OperatingSystem) {
-								os.toString();
+								System.out.println(os.toString());
 							}
 						}
 
@@ -277,7 +398,7 @@ public class ConsoleImpl implements IUserInterface {
 						final List<SuperBean> softwares = this.logic.searchComponentsByAttributes(
 								componentSearchAttributes, "software");
 						for (final SuperBean software : softwares) {
-							software.toString();
+							System.out.println(software.toString());
 						}
 
 						break;
@@ -299,7 +420,144 @@ public class ConsoleImpl implements IUserInterface {
 
 	/** {@inheritDoc} */
 	public void updateComponent() {
-		// TODO Auto-generated method stub
+		Short updateSelection;
+		do {
+			System.out.println("\nWas für eine Komponente soll bearbeitet werden?");
+			System.out.println("(1) Computer");
+			System.out.println("(2) Netzwerkkarte");
+			System.out.println("(3) Betriebssystem");
+			System.out.println("(4) Software");
+			System.out.println("(0) Zurück zum Hauptmenü");
+
+			System.out.println("\nAuswahl: ");
+
+			final Scanner updateInput = new Scanner(System.in);
+			updateSelection = updateInput.nextShort();
+
+			final List<String> messages;
+			switch (updateSelection) {
+
+			case 1: // update computer
+				final Computer computer = new Computer();
+
+				System.out.println("\nID von dem Computer der bearbeitet wird: ");
+				Scanner computerInput = new Scanner(System.in);
+				computer.setId(computerInput.nextInt());
+
+				System.out.println("\n\nGeben Sie bei den Attributen Daten ein, die bearbeitet werden soll");
+
+				System.out.println("\nComputername: ");
+				computerInput = new Scanner(System.in);
+				computer.setName(computerInput.nextLine());
+
+				messages = this.logic.updateComponent(computer);
+				for (final String msg : messages) {
+					System.out.println(msg);
+				}
+				break;
+
+			case 2: // update networkInterfaceCard
+				final NetworkInterfaceCard nic = new NetworkInterfaceCard();
+
+				System.out.println("\nID von der Netzwerkkarte die bearbeitet wird: ");
+				Scanner nicInput = new Scanner(System.in);
+				nic.setId(nicInput.nextInt());
+
+				System.out.println("\n\nGeben Sie bei den Attributen Daten ein, die bearbeitet werden soll");
+
+				System.out.println("\nComputer ID: ");
+				nicInput = new Scanner(System.in);
+				if (!nicInput.nextLine().equals("")) {
+					nic.setComputerId(Integer.parseInt(nicInput.nextLine()));
+				}
+
+				System.out.println("MAC-Adresse: ");
+				nicInput = new Scanner(System.in);
+				nic.setMacAddress(nicInput.nextLine());
+
+				System.out.println("IP-Adresse: ");
+				nicInput = new Scanner(System.in);
+				nic.setIpAddress(nicInput.nextLine());
+
+				System.out.println("Subnetz Maske: ");
+				nicInput = new Scanner(System.in);
+				nic.setSubnetMask(nicInput.nextLine());
+
+				System.out.println("Gateway: ");
+				nicInput = new Scanner(System.in);
+				nic.setGateway(nicInput.nextLine());
+
+				System.out.println("DNS: ");
+				nicInput = new Scanner(System.in);
+				nic.setDns(nicInput.nextLine());
+
+				System.out.println("Domäne: ");
+				nicInput = new Scanner(System.in);
+				nic.setDomain(nicInput.nextLine());
+
+				messages = this.logic.updateComponent(nic);
+				for (final String msg : messages) {
+					System.out.println(msg);
+				}
+				break;
+
+			case 3: // update operatingSystem
+				final OperatingSystem os = new OperatingSystem();
+
+				System.out.println("\nID von dem Betriebssystem das bearbeitet wird: ");
+				Scanner osInput = new Scanner(System.in);
+				os.setId(osInput.nextInt());
+
+				System.out.println("\n\nGeben Sie bei den Attributen Daten ein, die bearbeitet werden soll");
+
+				System.out.println("Name: ");
+				osInput = new Scanner(System.in);
+				os.setName(osInput.nextLine());
+
+				System.out.println("Beschreibung: ");
+				osInput = new Scanner(System.in);
+				os.setDescription(osInput.nextLine());
+
+				messages = this.logic.updateComponent(os);
+				for (final String msg : messages) {
+					System.out.println(msg);
+				}
+				break;
+
+			case 4: // update software
+				final Software software = new Software();
+
+				System.out.println("\nID von der Software die bearbeitet wird: ");
+				Scanner softwareInput = new Scanner(System.in);
+				software.setId(softwareInput.nextInt());
+
+				System.out.println("\n\nGeben Sie bei den Attributen Daten ein, die bearbeitet werden soll");
+
+				System.out.println("Name: ");
+				softwareInput = new Scanner(System.in);
+				software.setName(softwareInput.nextLine());
+
+				System.out.println("Versionsnummer: ");
+				softwareInput = new Scanner(System.in);
+				software.setVersionNumber(softwareInput.nextLine());
+
+				System.out.println("Beschreibung: ");
+				softwareInput = new Scanner(System.in);
+				software.setDescription(softwareInput.nextLine());
+
+				messages = this.logic.updateComponent(software);
+				for (final String msg : messages) {
+					System.out.println(msg);
+				}
+				break;
+
+			case 0: // exit to main menu
+				break;
+
+			default:
+				System.err.println("\nFalsche Eingabe!");
+			}
+		} while (updateSelection != 0);
 
 	}
 

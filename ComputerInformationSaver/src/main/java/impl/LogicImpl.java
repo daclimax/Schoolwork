@@ -4,6 +4,7 @@ import helper.ValidationHelper;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -28,8 +29,11 @@ import bean.SuperBean;
 
 public class LogicImpl implements ILogicController {
 
+	// locale for the resourceBundle
+	private static Locale de_DE = new Locale("de", "DE");
+
 	// messages
-	private static final ResourceBundle MESSAGES = ResourceBundle.getBundle("messages");
+	private static final ResourceBundle MESSAGES = ResourceBundle.getBundle("messages.messages_de_DE", LogicImpl.de_DE);
 
 	// dataService
 	private final IDatabaseOperations dataRemote;
@@ -61,19 +65,23 @@ public class LogicImpl implements ILogicController {
 		if (component instanceof NetworkInterfaceCard) {
 			// in case of a networkInterfaceCard validate the ipAddresses and the macAddress
 
-			if (!ValidationHelper.ipAddressValidation(((NetworkInterfaceCard) component).getIpAddress())) {
+			if ((!((NetworkInterfaceCard) component).getIpAddress().equals(""))
+					&& !ValidationHelper.ipAddressValidation(((NetworkInterfaceCard) component).getIpAddress())) {
 				messages.add(LogicImpl.MESSAGES.getString("nic.ipAddressError"));
 				isValidationCorrect = false;
 			}
-			if (!ValidationHelper.ipAddressValidation(((NetworkInterfaceCard) component).getSubnetMask())) {
+			if (!(((NetworkInterfaceCard) component).getSubnetMask().equals(""))
+					&& !ValidationHelper.ipAddressValidation(((NetworkInterfaceCard) component).getSubnetMask())) {
 				messages.add(LogicImpl.MESSAGES.getString("nic.subnetMaskError"));
 				isValidationCorrect = false;
 			}
-			if (!ValidationHelper.ipAddressValidation(((NetworkInterfaceCard) component).getGateway())) {
+			if (!(((NetworkInterfaceCard) component).getGateway().equals(""))
+					&& !ValidationHelper.ipAddressValidation(((NetworkInterfaceCard) component).getGateway())) {
 				messages.add(LogicImpl.MESSAGES.getString("nic.gatewayError"));
 				isValidationCorrect = false;
 			}
-			if (!ValidationHelper.ipAddressValidation(((NetworkInterfaceCard) component).getDns())) {
+			if (!(((NetworkInterfaceCard) component).getDns().equals(""))
+					&& !ValidationHelper.ipAddressValidation(((NetworkInterfaceCard) component).getDns())) {
 				messages.add(LogicImpl.MESSAGES.getString("nic.dnsError"));
 				isValidationCorrect = false;
 			}
@@ -106,13 +114,24 @@ public class LogicImpl implements ILogicController {
 			searchResults = this.dataRemote.searchSoftwareByAttributes(searchAttributes);
 		}
 
+		// output a warning when the list of results is empty.
+		if (searchResults.size() == 0) {
+			System.out.println(LogicImpl.MESSAGES.getString("empty"));
+		}
 		return (List<SuperBean>) searchResults;
 	}
 
 	/** {@inheritDoc} */
 	public List<SearchResult> searchDataByAttributes(final Map<String, String> searchAttributes) {
 		// just search with attributes
-		return this.dataRemote.searchDataByAttributes(searchAttributes);
+		final List<SearchResult> searchResults = this.dataRemote.searchDataByAttributes(searchAttributes);
+
+		// output a warning when the list of results is empty.
+		if (searchResults.size() == 0) {
+			System.out.println(LogicImpl.MESSAGES.getString("empty"));
+		}
+
+		return searchResults;
 	}
 
 	/** {@inheritDoc} */
@@ -124,19 +143,23 @@ public class LogicImpl implements ILogicController {
 		if (component instanceof NetworkInterfaceCard) {
 			// in case of a networkInterfaceCard validate the ipAddresses and the macAddress
 
-			if (!ValidationHelper.ipAddressValidation(((NetworkInterfaceCard) component).getIpAddress())) {
+			if (!(((NetworkInterfaceCard) component).getIpAddress().equals(""))
+					&& !ValidationHelper.ipAddressValidation(((NetworkInterfaceCard) component).getIpAddress())) {
 				messages.add(LogicImpl.MESSAGES.getString("nic.ipAddressError"));
 				isValidationCorrect = false;
 			}
-			if (!ValidationHelper.ipAddressValidation(((NetworkInterfaceCard) component).getSubnetMask())) {
+			if (!(((NetworkInterfaceCard) component).getSubnetMask().equals(""))
+					&& !ValidationHelper.ipAddressValidation(((NetworkInterfaceCard) component).getSubnetMask())) {
 				messages.add(LogicImpl.MESSAGES.getString("nic.subnetMaskError"));
 				isValidationCorrect = false;
 			}
-			if (!ValidationHelper.ipAddressValidation(((NetworkInterfaceCard) component).getGateway())) {
+			if (!(((NetworkInterfaceCard) component).getGateway().equals(""))
+					&& !ValidationHelper.ipAddressValidation(((NetworkInterfaceCard) component).getGateway())) {
 				messages.add(LogicImpl.MESSAGES.getString("nic.gatewayError"));
 				isValidationCorrect = false;
 			}
-			if (!ValidationHelper.ipAddressValidation(((NetworkInterfaceCard) component).getDns())) {
+			if (!(((NetworkInterfaceCard) component).getDns().equals(""))
+					&& !ValidationHelper.ipAddressValidation(((NetworkInterfaceCard) component).getDns())) {
 				messages.add(LogicImpl.MESSAGES.getString("nic.dnsError"));
 				isValidationCorrect = false;
 			}
